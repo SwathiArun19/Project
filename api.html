@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Random Joke Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #f0f8ff;
+        }
+        #joke {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #333;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4b0082;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #6a0dad;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Random Joke Generator</h2>
+<button onclick="getJoke()">Get a Joke</button>
+<div id="joke"></div>
+
+<script>
+async function getJoke() {
+    try {
+        // Fetch a joke from JokeAPI
+        let response = await fetch("https://v2.jokeapi.dev/joke/Any");
+        let data = await response.json();
+
+        // Check if the joke has single or two parts
+        if(data.type === "single") {
+            document.getElementById("joke").innerHTML = data.joke;
+        } else if(data.type === "twopart") {
+            document.getElementById("joke").innerHTML = 
+                data.setup + "<br><br>" + data.delivery;
+        }
+    } catch(error) {
+        console.log("Error fetching joke:", error);
+        document.getElementById("joke").innerHTML = "Oops! Could not fetch a joke.";
+    }
+}
+</script>
+
+</body>
+</html>
